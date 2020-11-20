@@ -206,13 +206,6 @@ FROM users AS u, orders AS o
 WHERE u.id=o.id_user;
 
 -- INNER JOIN (JOIN)
-
-SELECT u.first_name, u.last_name, o.created_at, ptoo.quantity FROM users AS u INNER JOIN orders AS o ON u.id=o.id_user JOIN phones_to_orders AS ptoo ON ptoo.id_order=o.id
-
-
-SELECT u.first_name||' '||u.last_name as User, sum(p.price * ptoo.quantity) 
-FROM  users u JOIN orders o ON u.id=o.id_user
-  JOIN phones_to_orders ptoo ON o.id=ptoo.id_order
-  JOIN phones p on ptoo.id_phone=p.id
-GROUP BY u.id
-
+SELECT u.first_name, u.last_name, o.created_at, ptoo.quantity
+FROM users AS u INNER JOIN orders AS o ON u.id=o.id_user 
+JOIN phones_to_orders AS ptoo ON ptoo.id_order=o.id
