@@ -46,7 +46,8 @@ VALUES (23,2,4.5),(36,1,2.5),(27,2,2.5),(33,4,3.5),(65,5,5.0),(30,3,4.7),(39,2,5
 
 -- 1. Отобразить имена и фамилии студентов и названия изучаемых ими курсов.
 
-SELECT s.first_name||' '||s.last_name AS students, string_agg(c.title, ', ') AS courses FROM students s
+SELECT s.first_name||' '||s.last_name AS students, string_agg(c.title, ', ') AS courses 
+FROM students s
 JOIN exams e on s.id=e.id_student
 JOIN courses c on e.id_course=c.id
 GROUP BY students
@@ -55,7 +56,8 @@ ORDER BY students ASC;
 -- 2. Создать представление по запросу 1.
 
 CREATE VIEW users_view AS
-SELECT s.first_name||' '||s.last_name AS students, string_agg(c.title, ', ') AS courses FROM students s
+SELECT s.first_name||' '||s.last_name AS students, string_agg(c.title, ', ') AS courses 
+FROM students s
 JOIN exams e on s.id=e.id_student
 JOIN courses c on e.id_course=c.id
 GROUP BY students
@@ -63,41 +65,47 @@ ORDER BY students ASC;
 
 -- 3. Отобразить баллы студента Петра Петренко aka Clare Potter* по дисциплине «Основы программирования».
 
-SELECT e.mark FROM students s
+SELECT e.mark 
+FROM students s
 JOIN exams e on s.id=e.id_student
 JOIN courses c on e.id_course=c.id
 WHERE s.first_name||' '||s.last_name = 'Clare Potter' AND c.title='Programming essentials';
 
 -- 4. Отобразить студентов, у которых есть баллы ниже 3.5.
 
-SELECT s.first_name||' '||s.last_name AS students FROM students s
+SELECT s.first_name||' '||s.last_name AS students 
+FROM students s
 JOIN exams e on s.id=e.id_student
 WHERE e.mark < 3.5
 GROUP BY students;
 
 -- 5. Отобразить студентов, которые прослушали дисциплину «Основы программирования» и имеют по ней оценку.
 
-SELECT s.first_name||' '||s.last_name AS students FROM students s
+SELECT s.first_name||' '||s.last_name AS students 
+FROM students s
 JOIN exams e on s.id=e.id_student
 JOIN courses c on e.id_course=c.id
 WHERE c.title='Programming essentials' AND e.mark IS NOT NULL;
 
 -- 6. Отобразить средний балл и количество курсов которые посетил каждый студент.
 
-SELECT s.first_name||' '||s.last_name AS students, avg(e.mark)::numeric(2,1) AS avg_mark, count(e.id_course) FROM students s
+SELECT s.first_name||' '||s.last_name AS students, avg(e.mark)::numeric(2,1) AS avg_mark, count(e.id_course) 
+FROM students s
 JOIN exams e on s.id=e.id_student
 GROUP BY students;
 
 -- 7. Отобразить студентов, которые имеют средний балл выше 4.0.
 
-SELECT s.first_name||' '||s.last_name AS students FROM students s
+SELECT s.first_name||' '||s.last_name AS students 
+FROM students s
 JOIN exams e on s.id=e.id_student
 GROUP BY students
 HAVING avg(e.mark)::numeric(2,1) > 4.0;
 
 -- 8. *Отобразить студентов, которые имеют средний балл выше, чем Петр Петренко aka Clare Potter*.
 
-SELECT s.first_name||' '||s.last_name AS students FROM students s
+SELECT s.first_name||' '||s.last_name AS students 
+FROM students s
 JOIN exams e on s.id=e.id_student
 GROUP BY students
 HAVING avg(e.mark)::numeric(2,1) > (
@@ -116,7 +124,8 @@ VALUES
 INSERT INTO exams (id_student, id_course, mark) 
 VALUES (23,7,NULL);
 
-SELECT c.title AS courses FROM courses c
+SELECT c.title AS courses 
+FROM courses c
 WHERE c.id NOT IN (
     SELECT e.id_course FROM exams e
     GROUP BY e.id_course
@@ -128,7 +137,8 @@ GROUP BY c.id;
 
 -- 10. *Отобразить студентов, которые прослушали те же курсы, что и Петр Петренко aka Clare Potter.
 
-SELECT s.first_name||' '||s.last_name AS students FROM students s
+SELECT s.first_name||' '||s.last_name AS students 
+FROM students s
 JOIN exams e on s.id=e.id_student
 WHERE s.first_name||' '||s.last_name <> 'Clare Potter'
 GROUP BY students
